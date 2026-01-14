@@ -4,22 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('klijents', function (Blueprint $table) {
-            $table->id();
+            $table->id('klijent_id'); // unsigned big int
+            $table->string('ime');
+            $table->string('prezime');
+            $table->string('email')->unique();
+            $table->string('telefon');
+            $table->string('lozinka');
+            $table->string('adresa');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('klijents');

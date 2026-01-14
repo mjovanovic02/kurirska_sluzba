@@ -4,20 +4,17 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Menadzer>
- */
 class MenadzerFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = \App\Models\Menadzer::class;
+
+    public function definition()
     {
         return [
-            //
+            'ime' => $this->faker->firstName,
+            'prezime' => $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail,
+            'lozinka' => bcrypt('password'),
         ];
     }
 }

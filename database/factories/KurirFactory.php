@@ -4,20 +4,18 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Kurir>
- */
 class KurirFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = \App\Models\Kurir::class;
+
+    public function definition()
     {
         return [
-            //
+            'ime' => $this->faker->firstName,
+            'prezime' => $this->faker->lastName,
+            'lozinka' => bcrypt('password'),
+            'broj_vozila' => $this->faker->bothify('???-####'),
+            'status' => $this->faker->randomElement(['aktivan', 'neaktivan']),
         ];
     }
 }

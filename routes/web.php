@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('kuriri', KurirController::class);
     Route::resource('menadzeri', MenadzerController::class);
 
-    // Special use cases
     Route::post('/posiljke/kreiraj', [PosiljkaController::class, 'kreiraj'])->name('posiljke.kreiraj');
     Route::post('/posiljke/{id}/preuzmi', [PosiljkaController::class, 'preuzmi'])->name('posiljke.preuzmi');
     Route::post('/posiljke/{id}/dostavi', [PosiljkaController::class, 'dostavi'])->name('posiljke.dostavi');

@@ -2,63 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menadzer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MenadzerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $menadzeri = Menadzer::all();
+        return view('menadzeri.index', compact('menadzeri'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('menadzeri.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'ime' => 'required|string|max:255',
+            'prezime' => 'required|string|max:255',
+            'email' => 'required|email|unique:menadzers,email',
+            'lozinka' => 'required|string|min:6',
+        ]);
+
+        Menadzer::create([
+            'ime' => $request->ime,
+            'prezime' => $request->prezime,
+            'email' => $request->email,
+            'lozinka' => Hash::make($request->lozinka),
+        ]);
+
+        return redirect()->route('menadzeri.index')
+            ->with('success', 'Menadžer uspešno dodat');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy($id)
     {
-        //
-    }
+        Menadzer::findOrFail($id)->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return redirect()->route('menadzeri.index')
+            ->with('success', 'Menadžer obrisan');
     }
+    public function show($id)
+{
+    $menadzer = Menadzer::findOrFail($id);
+    return view('menadzeri.show', compact('menadzer'));
+}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

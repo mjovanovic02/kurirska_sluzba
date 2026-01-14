@@ -2,63 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Klijent;
 use Illuminate\Http\Request;
 
 class KlijentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $klijenti = Klijent::all();
+        return view('klijenti.index', compact('klijenti'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('klijenti.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'ime' => 'required|string|max:255',
+            'prezime' => 'required|string|max:255',
+            'email' => 'required|email|unique:klijents,email',
+            'telefon' => 'required|string|max:20',
+            'lozinka' => 'required|string|min:6',
+            'adresa' => 'required|string|max:255',
+        ]);
+
+        Klijent::create($request->all());
+
+        return redirect()->route('klijenti.index')->with('success', 'Klijent dodat.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $klijent = Klijent::findOrFail($id);
+        return view('klijenti.show', compact('klijent'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy($id)
     {
-        //
-    }
+        $klijent = Klijent::findOrFail($id);
+        $klijent->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('klijenti.index')->with('success', 'Klijent obrisan.');
     }
 }

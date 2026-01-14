@@ -1,64 +1,56 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Hash;
 
+use App\Models\Kurir;
 use Illuminate\Http\Request;
 
 class KurirController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+ public function index()
     {
-        //
+        $kuriri = Kurir::all();
+        return view('kuriri.index', compact('kuriri'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('kuriri.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'ime' => 'required|string|max:255',
+            'prezime' => 'required|string|max:255',
+            'lozinka' => 'required|string|min:6',
+            'broj_vozila' => 'required|string|max:50',
+            'status' => 'required|in:aktivan,neaktivan',
+        ]);
+
+        Kurir::create([
+            'ime' => $request->ime,
+            'prezime' => $request->prezime,
+            'lozinka' => Hash::make($request->lozinka),
+            'broj_vozila' => $request->broj_vozila,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('kuriri.index')
+            ->with('success', 'Kurir uspešno dodat');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Kurir $kuriri)
     {
-        //
+        return view('kuriri.show', compact('kuriri'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(Kurir $kuriri)
     {
-        //
-    }
+        $kuriri->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('kuriri.index')
+            ->with('success', 'Kurir obrisan');
     }
 }

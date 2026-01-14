@@ -9,4 +9,16 @@ class Kurir extends Model
 {
     /** @use HasFactory<\Database\Factories\KurirFactory> */
     use HasFactory;
+    protected $primaryKey = 'kurir_id'; // već si ovo stavio
+    public $incrementing = true;
+    protected $keyType = 'int';
+protected $fillable = [
+    'ime',
+    'prezime',
+    'lozinka',
+    'broj_vozila',
+    'status',
+];
+
+
 }

@@ -6,7 +6,11 @@ use App\Http\Controllers\PosiljkaController;
 use App\Http\Controllers\KurirController;
 use App\Http\Controllers\MenadzerController;
 use Illuminate\Support\Facades\Route;
-
+// Lista pošiljki za preuzimanje
+Route::get('/kuriri/posiljke', [KurirController::class, 'listaZaPreuzimanje']);
+// Akcija preuzimanja pošiljke
+Route::post('/kuriri/posiljke/{id}/preuzmi', [KurirController::class, 'preuzmi'])
+    ->name('kurir.posiljke.preuzmi');
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/posiljke/{id}/preuzmi', [PosiljkaController::class, 'preuzmi'])->name('posiljke.preuzmi');
     Route::post('/posiljke/{id}/dostavi', [PosiljkaController::class, 'dostavi'])->name('posiljke.dostavi');
     Route::post('/posiljke/{id}/dodeli', [PosiljkaController::class, 'dodeli'])->name('posiljke.dodeli');
+
 });
 
 require __DIR__.'/auth.php';
